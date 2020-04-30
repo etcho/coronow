@@ -99,7 +99,8 @@ h2 {
 }
 
 .slider.slider-horizontal {
-    width: 95% !important;
+    width: 75% !important;
+    margin-left: -21%;
 }
 
 #slider-map, #slider-counters {
@@ -107,15 +108,16 @@ h2 {
 }
 
 #slider-map-date, #slider-counters-date {
-    padding: 2px 8px;
+    padding: 3px 8px 4px;
     margin-bottom: 0px;
     background: #EEE;
     border-radius: 5px;
     font-size: 14px;
     font-weight: bold;
-    position: relative;
-    top: -8px;
-    left: 112px;
+    position: absolute;
+    right: 0px;
+    width: 19%;
+    text-align: left;
 }
 
 .map-controller .btn-group .btn {
@@ -137,4 +139,43 @@ h2 {
 
 .counter_change.going-down {
     color: green;
+}
+
+#wrapper-table {
+    overflow: auto;
+    font-size: 12px;
+}
+
+#wrapper-table th:first-child {
+    font-size: 14px;
+}
+
+#wrapper-table th {
+    font-size: 20px;
+    text-align: center;
+}
+
+#wrapper-table th.sorting_desc, #wrapper-table th.sorting_asc {
+    background-color: #ffffd1;
+}
+
+#wrapper-table td {
+    padding: 0px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    margin-bottom: 10px;
+}
+
+#fixed-slider {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: #DDD;
+    border-radius: 5px;
+    border: 1px solid #666;
 }

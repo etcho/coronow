@@ -155,7 +155,7 @@ function buildMapChart(i) {
             cdata.push([b, data[b][i][attribute]]);
         }
     });
-    $("#slider-map-date").html(beautifyDate(data.world[i].date));
+    //$("#slider-map-date").html(beautifyDate(data.world[i].date));
 
     var colors = ['#fff9f9', '#ffc9c9', '#ffa9a9', '#ff8989', '#ff6f69'];
     if (attribute === "confirmed") {
@@ -197,6 +197,50 @@ function updateCounters(country, i) {
     $("#slider-counters-date").html(beautifyDate(data.world[i].date));
 }
 
+function buildTable(i_slider) {
+    i_slider = i_slider === undefined ? data.world.length - 1 : i_slider;
+    var html = '';
+    html += '<table id="main-table" class="table table-striped table-bordered table-condensed">';
+    html += '   <thead>';
+    html += '       <tr>';
+    html += '           <th><lang for="country">' + lang.country + '</lang></th>';
+    html += '           <th><i class="fas fa-clipboard-check"></i> <lang class="d-none d-sm-inline" for="confirmed">' + lang.confirmed + '</lang></th>';
+    html += '           <th><i class="fas fa-skull"></i> <lang class="d-none d-sm-inline" for="deaths">' + lang.deaths + '</lang></th>';
+    html += '           <th><i class="fas fa-shield-virus"></i> <lang class="d-none d-sm-inline" for="recovered">' + lang.recovered + '</lang></th>';
+    html += '           <th><i class="fas fa-skull-crossbones"></i> <lang class="d-none d-sm-inline" for="fatality">' + lang.fatality + '</lang></th>';
+    html += '       </tr>';
+    html += '       <tbody>';
+
+    for (var i = 0; i < Object.keys(data).length; i++) {
+        var country = Object.keys(data)[i];
+        if (country === "world") {
+            continue;
+        }
+        var last_entry = data[country][i_slider];
+        html += '       <tr>';
+        html += '           <td>' + country + '</td>';
+        html += '           <td class="text-center">' + last_entry.confirmed + '</td>';
+        html += '           <td class="text-center">' + last_entry.deaths + '</td>';
+        html += '           <td class="text-center">' + last_entry.recovered + '</td>';
+        html += '           <td class="text-center">' + (numberFormat(((isNaN(last_entry.deaths / (last_entry.confirmed) * 100) ? 0 : last_entry.deaths / (last_entry.confirmed) * 100)).toFixed(1)) + "%") + '</td>';
+        html += '       </tr>';
+    }
+
+    html += '       </tbody>';
+    html += '   </thead>';
+    html += '</table>';
+
+    $("#wrapper-table").html(html);
+    $("#main-table").DataTable({
+        "bLengthChange": false,
+        "bFilter": false,
+        "bInfo": false,
+        "iDisplayLength": 20,
+        "order": [[1, "desc"]],
+        "pagingType": "numbers"
+    });
+}
+
 var data = false;
 var current_lang = navigator.language.split("-")[0];
 var lang = {};
@@ -213,6 +257,7 @@ if (current_lang === "pt") {
         comparing_countries: "Comparar países",
         footer: "Feito por <a href='https://github.com/etcho'>Etcho</a> para a <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Fonte de dados</a>.",
         world_map: "Mapa do Mundo",
+        ranking: "Ranking"
     };
 } else {
     lang = {
@@ -227,6 +272,7 @@ if (current_lang === "pt") {
         comparing_countries: "Compare countries",
         footer: "Made by <a href='https://github.com/etcho'>Etcho</a> for <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Data source</a>.",
         world_map: "World Map",
+        ranking: "Ranking"
     };
 }
 
@@ -268,13 +314,12 @@ $(document).ready(function () {
             $("select").show().select2().trigger("change");
             $(".loading").not(".dontgo").hide();
 
-            $("#slider-map, #slider-counters").attr("data-slider-max", data.world.length - 1).attr("data-slider-value", data.world.length - 1);
-            $("#slider-map, #slider-counters").slider();
-            $("#slider-map").on("change", function (slideEvt) {
-                buildMapChart(slideEvt.value.newValue);
-            });
+            $("#slider-counters").attr("data-slider-max", data.world.length - 1).attr("data-slider-value", data.world.length - 1);
+            $("#slider-counters").slider();
             $("#slider-counters").on("change", function (slideEvt) {
                 updateCounters($("#country").select2("val"), slideEvt.value.newValue);
+                buildMapChart(slideEvt.value.newValue);
+                buildTable(slideEvt.value.newValue);
             });
         }
     });
@@ -285,6 +330,7 @@ $(document).ready(function () {
         jump(country);
         buildCharts();
         buildChartCompare();
+        buildTable();
     });
 
     $("img.flag").on("click", function () {
@@ -297,7 +343,7 @@ $(document).ready(function () {
     $("#map-buttons-world-map .btn").on("click", function () {
         $("#map-buttons-world-map .btn").removeClass("btn-warning").addClass("btn-secondary");
         $(this).addClass("btn-warning");
-        buildMapChart($("#slider-map").val());
+        buildMapChart($("#slider-counters").val());
     });
 
     google.charts.load('current', {

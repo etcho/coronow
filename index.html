@@ -16,6 +16,10 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+
+        <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+
         <link rel="stylesheet" href="css/style.css" />
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29842207-15"></script>
@@ -35,17 +39,19 @@
     <body>
         <div class="header">Coro<span>now</span></div>
         <div class="container">
+            <div id="fixed-slider">
+                <div class="row">
+                    <div class="col-12 text-center" style="margin-top: 0px; margin-bottom: -10px; height: 38px">
+                        <input id="slider-counters" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/>
+                    </div>
+                    <label id="slider-counters-date"></label>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12 text-center">
                     <label for="country"><lang for="country"></lang></label>
                     <div class="loading"><i class="fas fa-virus fa-spin"></i></div>
                     <select id="country"></select>
-                    <label id="slider-counters-date" style="left: 3px; top: 1px;"></label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center" style="margin-top: 6px; margin-bottom: -10px;">
-                    <input id="slider-counters" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/>
                 </div>
             </div>
             <div class="row">
@@ -78,6 +84,15 @@
 
             <div class="row">
                 <div class="col-12">
+                    <h1><lang for="ranking"></lang></h1>
+                    <div id="wrapper-table" class="chart-wrapper">
+                        <div class="loading"><i class="fas fa-virus fa-spin"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
                     <h1><lang for="world_map"></lang></h1>
                     <div class="map-controller" id="map-buttons-world-map">
                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -85,10 +100,6 @@
                             <button type="button" class="btn btn-warning" attribute="deaths"><i class="fas fa-skull"></i></button>
                             <button type="button" class="btn btn-secondary" attribute="recovered"><i class="fas fa-shield-virus"></i></button>
                         </div>
-                    </div>
-                    <div class="map-controller" style="margin-top: -32px">
-                        <label id="slider-map-date"></label>
-                        <input id="slider-map" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/>
                     </div>
                     <div id="wrapper-map" class="chart-wrapper">
                         <div class="loading dontgo"><i class="fas fa-virus fa-spin"></i></div>
