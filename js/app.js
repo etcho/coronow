@@ -265,7 +265,7 @@ if (current_lang === "pt") {
         overall_growth: "Crescimento geral",
         months: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
         comparing_countries: "Comparar países",
-        footer: "Feito por <a href='https://github.com/etcho'>Etcho</a> para a <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Fonte de dados</a>.",
+        footer: "Feito por <a href='https://github.com/etcho'>Etcho</a> para a <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Fonte dos dados</a> e <a href='https://github.com/samayo/country-json' target='_blank'>população</a>.",
         world_map: "Mapa do Mundo",
         ranking: "Ranking",
         by_100k: "/ 100 mil hab."
@@ -281,7 +281,7 @@ if (current_lang === "pt") {
         overall_growth: "Overall growth",
         months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         comparing_countries: "Compare countries",
-        footer: "Made by <a href='https://github.com/etcho'>Etcho</a> for <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Data source</a>.",
+        footer: "Made by <a href='https://github.com/etcho'>Etcho</a> for <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Data source</a> and <a href='https://github.com/samayo/country-json' target='_blank'>population</a>.",
         world_map: "World Map",
         ranking: "Ranking",
         by_100k: "By 100k inh."
