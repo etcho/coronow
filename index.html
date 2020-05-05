@@ -48,28 +48,35 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 text-center">
-                    <label for="country"><lang for="country"></lang></label>
+                <div class="col-12 text-center" style="margin-top: 10px">
                     <div class="loading"><i class="fas fa-virus fa-spin"></i></div>
                     <select id="country"></select>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                     <h1><lang for="confirmed"></lang> <i class="fas fa-clipboard-check"></i></h1>
                     <div class="main-counter" id="counter_confirmed"><i class="fas fa-virus fa-spin"></i></div>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                     <h1><lang for="deaths"></lang> <i class="fas fa-skull"></i></h1>
                     <div class="main-counter" id="counter_deaths"><i class="fas fa-virus fa-spin"></i></div>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                     <h1><lang for="recovered"></lang> <i class="fas fa-shield-virus"></i></h1>
                     <div class="main-counter" id="counter_recovered"><i class="fas fa-virus fa-spin"></i></div>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-2">
                     <h1><lang for="fatality"></lang> <i class="fas fa-skull-crossbones"></i></h1>
                     <div class="main-counter" id="counter_fatality"><i class="fas fa-virus fa-spin"></i></div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <h1 class="by_100k"><i class="fas fa-clipboard-check"></i> <lang for="by_100k"></lang></h1>
+                    <div class="main-counter by_100k" id="counter_confirmed_100k"><i class="fas fa-virus fa-spin"></i></div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <h1 class="by_100k"><i class="fas fa-skull"></i> <lang for="by_100k"></lang></h1>
+                    <div class="main-counter by_100k" id="counter_deaths_100k"><i class="fas fa-virus fa-spin"></i></div>
                 </div>
             </div>
 
@@ -140,5 +147,6 @@
             </div>
         </div>
     </body>
+    <script src="js/population.js"></script>
     <script src="js/app.js"></script>
 </html>

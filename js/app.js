@@ -155,7 +155,6 @@ function buildMapChart(i) {
             cdata.push([b, data[b][i][attribute]]);
         }
     });
-    //$("#slider-map-date").html(beautifyDate(data.world[i].date));
 
     var colors = ['#fff9f9', '#ffc9c9', '#ffa9a9', '#ff8989', '#ff6f69'];
     if (attribute === "confirmed") {
@@ -185,14 +184,21 @@ function updateCounters(country, i) {
     var d = data[country];
     i = i === undefined ? d.length - 1 : i;
     if (i > 0) {
-        $("#counter_confirmed").html(numberFormat(d[i].confirmed) + '<div class="counter_change' + (d[i].confirmed - d[i - 1].confirmed > 0 ? ' going-up"><i class="fas fa-caret-up"></i> ' : ' going-down"><i class="fas fa-caret-down"></i> ') + (numberFormat(d[i].confirmed - d[i - 1].confirmed)) + '</div>');
-        $("#counter_deaths").html(numberFormat(d[i].deaths) + '<div class="counter_change' + (d[i].deaths - d[i - 1].deaths > 0 ? ' going-up"><i class="fas fa-caret-up"></i> ' : ' going-down"><i class="fas fa-caret-down"></i> ') + (numberFormat(d[i].deaths - d[i - 1].deaths)) + '</div>');
+        $("#counter_confirmed").html((country === "world" ? "" : '<div class="rank_counter">' + d[i].rank_confirmed + '&deg;</div>') + numberFormat(d[i].confirmed) + '<div class="counter_change' + (d[i].confirmed - d[i - 1].confirmed > 0 ? ' going-up"><i class="fas fa-caret-up"></i> ' : ' going-down"><i class="fas fa-caret-down"></i> ') + (numberFormat(d[i].confirmed - d[i - 1].confirmed)) + '</div>');
+        $("#counter_deaths").html((country === "world" ? "" : '<div class="rank_counter">' + d[i].rank_deaths + '&deg;</div>') + numberFormat(d[i].deaths) + '<div class="counter_change' + (d[i].deaths - d[i - 1].deaths > 0 ? ' going-up"><i class="fas fa-caret-up"></i> ' : ' going-down"><i class="fas fa-caret-down"></i> ') + (numberFormat(d[i].deaths - d[i - 1].deaths)) + '</div>');
         $("#counter_recovered").html(numberFormat(d[i].recovered) + '<div class="counter_change' + (d[i].recovered - d[i - 1].recovered >= 0 ? ' going-down"><i class="fas fa-caret-up"></i> ' : ' going-up"><i class="fas fa-caret-down"></i> ') + (numberFormat(d[i].recovered - d[i - 1].recovered)) + '</div>');
     } else {
         $("#counter_confirmed").html(numberFormat(d[i].confirmed));
         $("#counter_deaths").html(numberFormat(d[i].deaths));
         $("#counter_recovered").html(numberFormat(d[i].recovered));
     }
+    if (country === "world" && d.confirmed_100k === undefined){
+        data[country][i].confirmed_100k = data[country][i].confirmed / population.world * 100000;
+        data[country][i].deaths_100k = data[country][i].deaths / population.world * 100000;
+        d = data[country];
+    }
+    $("#counter_confirmed_100k").html((country === "world" ? "" : '<div class="rank_counter">' + d[i].rank_confirmed_100k + '&deg;</div>') + numberFormat(d[i].confirmed_100k));
+    $("#counter_deaths_100k").html((country === "world" ? "" : '<div class="rank_counter">' + d[i].rank_deaths_100k + '&deg;</div>') + numberFormat(d[i].deaths_100k));
     $("#counter_fatality").html(numberFormat(((isNaN(d[i].deaths / (d[i].confirmed) * 100) ? 0 : d[i].deaths / (d[i].confirmed) * 100)).toFixed(1)) + "%");
     $("#slider-counters-date").html(beautifyDate(data.world[i].date));
 }
@@ -208,6 +214,8 @@ function buildTable(i_slider) {
     html += '           <th><i class="fas fa-skull"></i> <lang class="d-none d-sm-inline" for="deaths">' + lang.deaths + '</lang></th>';
     html += '           <th><i class="fas fa-shield-virus"></i> <lang class="d-none d-sm-inline" for="recovered">' + lang.recovered + '</lang></th>';
     html += '           <th><i class="fas fa-skull-crossbones"></i> <lang class="d-none d-sm-inline" for="fatality">' + lang.fatality + '</lang></th>';
+    html += '           <th style="font-size: 10px; padding: 10px 0px;"><i class="fas fa-clipboard-check"></i> <lang class="" for="by_100k">' + lang.by_100k + '</lang></th>';
+    html += '           <th style="font-size: 10px; padding: 10px 0px;"><i class="fas fa-skull"></i> <lang class="" for="by_100k">' + lang.by_100k + '</lang></th>';
     html += '       </tr>';
     html += '       <tbody>';
 
@@ -219,10 +227,12 @@ function buildTable(i_slider) {
         var last_entry = data[country][i_slider];
         html += '       <tr>';
         html += '           <td>' + country + '</td>';
-        html += '           <td class="text-center">' + last_entry.confirmed + '</td>';
-        html += '           <td class="text-center">' + last_entry.deaths + '</td>';
+        html += '           <td class="text-center nowrap" data-order="' + last_entry.confirmed + '">' + last_entry.confirmed + ' <span class="position_rank">(' + last_entry.rank_confirmed + '&deg;)</span></td>';
+        html += '           <td class="text-center nowrap" data-order="' + last_entry.deaths + '">' + last_entry.deaths + ' <span class="position_rank">(' + last_entry.rank_deaths + '&deg;)</span></td>';
         html += '           <td class="text-center">' + last_entry.recovered + '</td>';
-        html += '           <td class="text-center">' + (numberFormat(((isNaN(last_entry.deaths / (last_entry.confirmed) * 100) ? 0 : last_entry.deaths / (last_entry.confirmed) * 100)).toFixed(1)) + "%") + '</td>';
+        html += '           <td class="text-center nowrap" data-order="' + last_entry.fatality + '">' + (numberFormat(last_entry.fatality) + "%") + '</td>';
+        html += '           <td class="text-center nowrap" data-order="' + last_entry.rank_confirmed_100k + '">' + (last_entry.confirmed_100k.toFixed(1)) + ' <span class="position_rank">(' + last_entry.rank_confirmed_100k + '&deg;)</span></td>';
+        html += '           <td class="text-center nowrap" data-order="' + last_entry.rank_deaths_100k + '">' + (last_entry.deaths_100k.toFixed(1)) + ' <span class="position_rank">(' + last_entry.rank_deaths_100k + '&deg;)</span></td>';
         html += '       </tr>';
     }
 
@@ -257,7 +267,8 @@ if (current_lang === "pt") {
         comparing_countries: "Comparar países",
         footer: "Feito por <a href='https://github.com/etcho'>Etcho</a> para a <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Fonte de dados</a>.",
         world_map: "Mapa do Mundo",
-        ranking: "Ranking"
+        ranking: "Ranking",
+        by_100k: "/ 100 mil hab."
     };
 } else {
     lang = {
@@ -272,7 +283,8 @@ if (current_lang === "pt") {
         comparing_countries: "Compare countries",
         footer: "Made by <a href='https://github.com/etcho'>Etcho</a> for <a href='https://github.com/lu-brito'>Lu</a> <i class='fas fa-heart'></i>. <a href='https://github.com/pomber/covid19' target='_blank'>Data source</a>.",
         world_map: "World Map",
-        ranking: "Ranking"
+        ranking: "Ranking",
+        by_100k: "By 100k inh."
     };
 }
 
@@ -289,6 +301,14 @@ $(document).ready(function () {
             $(Object.keys(data)).each(function (a, b) {
                 $("#country").append('<option value="' + b + '">' + b + '</option>');
                 $(data[b]).each(function (c, d) {
+                    data[b][c]["confirmed_100k"] = d.confirmed / population[b] * 100000;
+                    data[b][c]["deaths_100k"] = d.deaths / population[b] * 100000;
+                    data[b][c]["fatality"] = ((isNaN(d.deaths / (d.confirmed) * 100) ? 0 : d.deaths / (d.confirmed) * 100)).toFixed(1);
+                    data[b][c]["rank_confirmed"] = 1;
+                    data[b][c]["rank_confirmed_100k"] = 1;
+                    data[b][c]["rank_deaths"] = 1;
+                    data[b][c]["rank_deaths_100k"] = 1;
+                    data[b][c]["rank_fatality"] = 1;
                     var found = false;
                     $(world).each(function (e, f) {
                         if (f.date === d.date) {
@@ -303,6 +323,30 @@ $(document).ready(function () {
                     }
                 });
             });
+
+            var keys = Object.keys(data);
+            for (var i = 0; i < keys.length; i++) {
+                var country = keys[i];
+                for (var j = 0; j < data[country].length; j++) {
+                    for (var k = 0; k < keys.length; k++) {
+                        var country2 = keys[k];
+                        if (data[country][j].confirmed < data[country2][j].confirmed) {
+                            data[country][j].rank_confirmed++;
+                        }
+                        if (data[country][j].deaths < data[country2][j].deaths) {
+                            data[country][j].rank_deaths++;
+                        }
+                        if (data[country][j].confirmed_100k < data[country2][j].confirmed_100k) {
+                            data[country][j].rank_confirmed_100k++;
+                        }
+                        if (data[country][j].deaths_100k < data[country2][j].deaths_100k) {
+                            data[country][j].rank_deaths_100k++;
+                        }
+                    }
+
+                }
+            }
+
             data.world = world;
             if (hash().length > 0) {
                 $("#country option").each(function () {
