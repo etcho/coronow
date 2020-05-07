@@ -226,7 +226,7 @@ function buildTable(i_slider) {
         }
         var last_entry = data[country][i_slider];
         html += '       <tr>';
-        html += '           <td>' + country + '</td>';
+        html += '           <td style="color: #0055f1; cursor: pointer;" onclick="$(\'#country\').val(\'' + country + '\').trigger(\'change\')">' + country + '</td>';
         html += '           <td class="text-center nowrap" data-order="' + last_entry.confirmed + '">' + last_entry.confirmed + ' <span class="position_rank">(' + last_entry.rank_confirmed + '&deg;)</span></td>';
         html += '           <td class="text-center nowrap" data-order="' + last_entry.deaths + '">' + last_entry.deaths + ' <span class="position_rank">(' + last_entry.rank_deaths + '&deg;)</span></td>';
         html += '           <td class="text-center">' + last_entry.recovered + '</td>';
