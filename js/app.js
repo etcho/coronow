@@ -275,7 +275,7 @@ if (current_lang === "pt") {
         country: "Country",
         confirmed: "Confirmed",
         deaths: "Deaths",
-        recevered: "Recovered",
+        recovered: "Recovered",
         fatality: "Fatality",
         all_world: "All World",
         overall_growth: "Overall growth",
